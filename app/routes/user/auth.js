@@ -5,7 +5,7 @@ const router =require("express").Router()
  * @swagger
  *  /login/get-otp:
  *   post:
- *       tags : [User-Otp] 
+ *       tags : [User-Authentication] 
  *       summary: login user in userpanel with phonenumber
  *       description: one time password(otp)
  *       parameters:
@@ -63,6 +63,35 @@ router.post("/get-otp",UserAuthController.getOtp)
  *  
  */ 
 router.post("/check-otp",UserAuthController.checkOtp)
+
+
+/**
+ * @swagger
+ *  /login/refresh_token:
+ *   post:
+ *       tags : [User-Authentication] 
+ *       summary: send refresh token for get new token
+ *       description: fresh token
+ *       parameters:
+ *       -    name: refreshToken
+ *            description: fa-IRI phonenumber
+ *            in: body
+ *            required: true
+ *            type: string
+ *      
+ *       responses:
+ *           200:
+ *               description: Success
+ *           400: 
+ *               description: Bad Request
+ *           401:
+ *               description: Unauthorization
+ *           500:
+ *               description: Internal Server Error     
+ * 
+ * 
+ *  
+ */ 
 router.post("/refresh_token",UserAuthController.refreshToken)
 
 

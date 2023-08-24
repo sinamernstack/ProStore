@@ -68,8 +68,9 @@ class UserAuthController extends Controller {
       console.log(now);
       console.log(user.otp.expiresIn);
       const accesstoken = await SignAccessToken(user._id);
+      const refreshtoken = await SignRefreshToken(user._id)
       return res.json({
-        data: { accesstoken },
+        data: { accesstoken,refreshtoken },
         user,
       });
     } catch (error) {
@@ -83,11 +84,10 @@ class UserAuthController extends Controller {
       const mobile = await verifyRefreshToken(refreshToken);
       const user = await UserModel.findOne({ mobile });
 
-      const accesstoken = await SignAccessToken();
+      const accesstoken = await SignAccessToken(user._id);
       const newRefreshToken = await SignRefreshToken(user._id);
       return res.json({
-        accesstoken,
-        refreshToken: newRefreshToken,
+        data: { accesstoken, refreshToken: newRefreshToken },
       });
     } catch (error) {
       next(error);
