@@ -1,0 +1,10 @@
+###request
+
+
+POST   http://localhost:5000/login/get-otp
+
+Content-Type: "application/json"
+
+{
+    "mobile":"09124567893"
+}
