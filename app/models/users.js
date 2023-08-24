@@ -23,3 +23,4 @@ const UserModel = mongoose.model("user", Schema);
 module.exports = {
   UserModel,
 };
+ 
