@@ -5,7 +5,7 @@ const router =require("express").Router()
  * @swagger
  *  /login/get-otp:
  *   post:
- *       tags : [User-Otp] 
+ *       tags : [User-Authentication] 
  *       summary: login user in userpanel with phonenumber
  *       description: one time password(otp)
  *       parameters:
