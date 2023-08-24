@@ -1,7 +1,8 @@
 const JWT = require("jsonwebtoken");
 const createError = require("http-errors");
 const { UserModel } = require("../models/users");
-const {REFRESHTOKEN,ACCESS_TOKEN_SECRET_KEY} = require("./constans");
+const { REFRESHTOKEN, ACCESS_TOKEN_SECRET_KEY } = require("./constans");
+
 function randomNumberGenerator() {
   return Math.floor(Math.random() * 90000 + 10000);
 }
@@ -42,20 +43,15 @@ function SignRefreshToken(userId) {
 }
 
 function verifyRefreshToken(token) {
-  if (token) {
-    JWT.verify(token, constans.REFRESHTOKEN, async (err, payload) => {
-      if (err)
-        return next(
-          createError.Unauthorized("!!لطفن مجددن وارد حساب کار بری خود شوید")
-        );
-      const { mobile } = payload || {};
+  return new Promise((resolve,reject)=>{
+    JWT.verify(token, REFRESHTOKEN, async (err, payload) => {
+      if (err) return next(createError.Unauthorized("!!لطفن مجددن وارد حساب کار بری خود شوید"));
+      const { mobile } = payload || {}
       const user = await UserModel.findOne({ mobile }, { password: 0, otp: 0 });
-      if (!user)
-        return next(createError.Unauthorized("!خساب کاربری یافت نشد "));
-      req.user = user;
-      return next();
+      if (!user) return next(createError.Unauthorized("!خساب کاربری یافت نشد "));
+      resolve(mobile)
     });
-  }
+  })
 }
 
 module.exports = {
