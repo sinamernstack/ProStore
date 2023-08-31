@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
-const { randomNumberGenerator } = require("../../../utils/functions");
+const { randomNumberGenerator } = require("../../utils/functions");
 /**
  * @swagger
  *  tags:
