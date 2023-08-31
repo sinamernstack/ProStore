@@ -74,11 +74,11 @@ router.post("/check-otp",UserAuthController.checkOtp)
  *       description: fresh token
  *       parameters:
  *       -    name: refreshToken
- *            description: fa-IRI phonenumber
- *            in: body
+ *            description: refresh-token 
+ *            in: formData
  *            required: true
- *            type: string
- *      
+ *            type: string 
+ *       
  *       responses:
  *           200:
  *               description: Success

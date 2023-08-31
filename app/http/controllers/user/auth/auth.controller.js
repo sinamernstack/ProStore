@@ -10,8 +10,9 @@ const {
   SignRefreshToken,
 } = require("../../../../utils/functions");
 const { UserModel } = require("../../../../models/users");
-const { EXPIRES_IN, USER_ROLE } = require("../../../../utils/constans");
+const {  USER_ROLE } = require("../../../../utils/constans");
 const Controller = require("../../controller");
+
 
 const router = require("express").Router();
 class UserAuthController extends Controller {
@@ -50,7 +51,7 @@ class UserAuthController extends Controller {
     return !!(await UserModel.create({
       mobile,
       otp,
-      roles: [USER_ROLE],
+      roles: [USER_ROLE.USER],
     }));
   }
   //////////////////////////////////////////////////////////////exist
