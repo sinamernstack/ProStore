@@ -1,7 +1,7 @@
 const { redisClient } = require("../utils/init_redis");
 const { HomeRoutes } = require("./api");
 const { UserAuth } = require("./user/auth");
-const { DeveloperRoutes } = require("./user/developer/developer.routes");
+const { DeveloperRoutes } = require("./developer/developer.routes");
 (async () => {
   await redisClient.set("key", "DS");
   const value = await redisClient.get("key");
