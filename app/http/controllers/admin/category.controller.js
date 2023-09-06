@@ -43,6 +43,42 @@ class CategoryController extends Controller {
     try {
       const category = await CategoryModel.aggregate([
         {
+          $graphLookup: {
+            from: "categories",
+            startWith:"$_id",
+            connectFromField: "_id",
+            connectToField: "parent",
+            maxDepth:5,
+            depthField:"depth",
+            as: "children",
+          },
+        },
+        {
+          $project: {
+            __v: 0,
+          },
+        },
+        {
+          $match: { parent: undefined },
+        },
+      ]);
+      return res.status(200).json({
+        statusCode: 201,
+        category,
+        message: "دسته بندی با موفقیت فراخوانده شد",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+
+
+
+  async getAllCategory1(req, res, next) {
+    try {
+      const category = await CategoryModel.aggregate([
+        {
           $lookup: {
             from: "categories",
             localField: "_id",
