@@ -32,6 +32,42 @@ const router = require("express").Router()
  */ 
 router.post("/add",categoryController.addCategory)
 
+
+
+
+
+
+/**
+ * @swagger
+ *  /admin/category/edit/{id}:
+ *    put:
+ *       tags : [Admin-Panel] 
+ *       summary: edit or update category title with object id
+ *       description: category ثیهفخق
+ *       parameters:
+ *          -    name: id
+ *               in: path
+ *               required: true
+ *               type: string 
+ *          -    name: title
+ *               in: formData
+ *               required: true
+ *               type: string   
+ *       
+ *       responses:
+ *           200:
+ *               description: Success
+ *           
+ *               
+ *           
+ * 
+ * 
+ *  
+ */ 
+router.put("/edit/:id",categoryController.editCategory)
+
+
+
 /**
  * @swagger
  *  /admin/category/parents:
@@ -93,6 +129,28 @@ router.get("/children/:parent",categoryController.getChildOfParentCategory)
 router.get("/all",categoryController.getAllCategory)
 
 
+
+
+/**
+ * @swagger
+ *  /admin/category/list-of-all:
+ *    get:
+ *       tags : [Admin-Panel] 
+ *       summary: read all categories without populate
+ *    
+ *       responses:
+ *           200:
+ *               description: Success
+ *           
+ *  
+ */ 
+router.get("/list-of-all",categoryController.getAlltCategoryWithoutPopulate)
+
+
+
+
+
+
 /**
  * @swagger
  *  /admin/category/remove/{id}:
@@ -111,5 +169,26 @@ router.get("/all",categoryController.getAllCategory)
  *  
  */ 
 router.delete("/remove/:id",categoryController.removeCategory)
+
+
+/**
+ * @swagger
+ *  /admin/category/{id}:
+ *    get:
+ *       tags : [Admin-Panel] 
+ *       summary: read category by id
+ *       parameters:
+ *           -   in: path
+ *               name: id
+ *               type: string      
+ *               required: true
+ *       responses:
+ *           200:
+ *               description: Success
+ *           
+ *  
+ */ 
+router.get("/:id",categoryController.getCategoryById)
+
 
 module.exports={CategoryRoutes : router}
