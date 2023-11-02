@@ -1,3 +1,4 @@
+const { verifyAccessToken } = require("../../http/middlewares/verifyAccessToken");
 const { BlogAdminApiRouter } = require("./blog");
 const { CategoryRoutes } = require("./category");
 
@@ -11,7 +12,7 @@ const router = require("express").Router();
  *      description : crud of blogs
  */
 router.use("/category",CategoryRoutes)
-router.use("/blogs",BlogAdminApiRouter)
+router.use("/blogs",verifyAccessToken,BlogAdminApiRouter)
 module.exports = {
   AdminRoutes: router,
 };

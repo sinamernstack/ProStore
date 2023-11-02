@@ -18,7 +18,14 @@ const router = require("express").Router();
 class UserAuthController extends Controller {
   async getOtp(req, res, next) {
     try {
-      await getOtpSchema.validateAsync(req.body);
+      const validationResult = getOtpSchema.validate(req.body);
+
+    if (validationResult.error) {
+      // Handle validation errors
+      return res.status(400).json({
+        error: validationResult.error.details[0].message,
+      });
+    }
       const { mobile } = req.body;
 
       const code = randomNumberGenerator();

@@ -19,7 +19,7 @@ module.exports = class Application {
     this.initRedis()
     this.configApplication();
     this.conneectToMongoDB();
-    this.createServer();
+    this.createServer(); 
     this.createRoutes();
     this.errorHandling();
   }
@@ -37,7 +37,7 @@ module.exports = class Application {
           swaggerDefinition: {
             info: {
               title: "store",
-              version: "2.0.0",
+              version: "6.2.8",
               description: "اولین استور سلحشوران",
               license: {
                 name: "MIT",
@@ -55,7 +55,7 @@ module.exports = class Application {
               },
             ],
           },
-          apis: ["./app/routes/**/*.js"],
+          apis: ["./app/routes/**/*.js"]
         })
       )
     );
@@ -106,7 +106,7 @@ module.exports = class Application {
       next(createError.NotFound("صفحه مورد نظر یافت نشد"));
     });
     this.#app.use((error, req, res, next) => {
-      const serverError = createError.InternalServerError;
+      const serverError = createError.InternalServerError();
       const statusCode = error.status || serverError.status;
       const message = error.message || serverError.message;
       return res.status(statusCode).json({
