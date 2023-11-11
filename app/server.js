@@ -7,7 +7,7 @@ const path = require("path");
 const { AllRoutes } = require("./routes/router");
 const morgan = require("morgan");
 const createError = require("http-errors");
-const cors = require("cors")
+const cors = require("cors");
 
 module.exports = class Application {
   #app = express();
@@ -16,15 +16,15 @@ module.exports = class Application {
   constructor(PORT, DB_URI) {
     this.#PORT = PORT;
     this.#DB_URI = DB_URI;
-    this.initRedis()
+    this.initRedis();
     this.configApplication();
     this.conneectToMongoDB();
-    this.createServer(); 
+    this.createServer();
     this.createRoutes();
     this.errorHandling();
   }
   configApplication() {
-    this.#app.use(cors())
+    this.#app.use(cors());
     this.#app.use(morgan("dev"));
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
@@ -35,6 +35,7 @@ module.exports = class Application {
       swaggerUI.setup(
         swaggerJSDoc({
           swaggerDefinition: {
+            openapi: "3.0.0",
             info: {
               title: "store",
               version: "6.2.8",
@@ -54,9 +55,20 @@ module.exports = class Application {
                 url: "http://localhost:5000",
               },
             ],
+            components: {
+              securitySchemes: {
+                BearerAuth: {
+                  type: "http",
+                  scheme: "bearer",
+                  bearerFormat: "JWT",
+                },
+              },
+            },
+            security: [{ BearerAuth: [] }],
           },
-          apis: ["./app/routes/**/*.js"]
-        })
+          apis: ["./app/routes/**/*.js"],
+        }),
+        { explorer: true }
       )
     );
   }
@@ -91,14 +103,12 @@ module.exports = class Application {
     }
   }
 
-
   createRoutes() {
     this.#app.use(AllRoutes);
   }
 
-
-  initRedis(){
-    require("./utils/init_redis")
+  initRedis() {
+    require("./utils/init_redis");
   }
 
   errorHandling() {

@@ -8,8 +8,7 @@ const router = require("express").Router();
  *  tags:
  *      name : Admin-Panel
  *      description : action of admin (add,remove,edit)
- *      name : Blog(AdminPanel)
- *      description : crud of blogs
+ *
  */
 router.use("/category",CategoryRoutes)
 router.use("/blogs",verifyAccessToken,BlogAdminApiRouter)

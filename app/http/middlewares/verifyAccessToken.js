@@ -6,7 +6,8 @@ const {ACCESS_TOKEN_SECRET_KEY} = require("../../utils/constans");
 
 function verifyAccessToken(req, res, next) {
   const headers = req.headers;
-const [token] =headers?.["access-token"]?.split(" ") || []
+const [bearer,token] =headers?.authorization?.split(" ") || []
+ 
 
   if (token ) {
     JWT.verify(
@@ -32,4 +33,19 @@ const [token] =headers?.["access-token"]?.split(" ") || []
       createError.Unauthorized("!لطفن مجددن وارد حساب کار بری خود شوید")
     );
 }
-module.exports = { verifyAccessToken };
+function checkRole(role) {
+  return function (req, res, next) {
+    try {
+      const user = req.user;
+      console.log(user.roles);
+      if (user?.roles.includes(role)) {
+        
+        return next();
+      }
+      throw createError.Forbidden("شما دسترسی لازم را ندارید");
+    } catch (error) {
+      next(error);
+    }
+  };
+}
+module.exports = { verifyAccessToken,checkRole };

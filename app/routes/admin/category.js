@@ -4,6 +4,22 @@ const { CategoryController } = require("../../http/controllers/admin/category.co
 const router = require("express").Router()
 
 
+/**
+ * @swagger
+ *  components:
+ *      schemas:    
+ *          Category:
+ *              type: object
+ *              required:
+ *                  -   title
+ *              properties:    
+ *                   title:
+ *                      type: string
+ *                      description: the title of category
+ *                   parent:
+ *                      type: string
+ *                      description: the parent of category 
+ */
 
 /**
  * @swagger
@@ -12,16 +28,15 @@ const router = require("express").Router()
  *       tags : [Admin-Panel] 
  *       summary: create new category title
  *       description: category maker
- *       parameters:
- *          -    name: title
- *               in: formData
- *               required: true
- *               type: string 
- *          -    name: parent
- *               in: formData
- *               required: false
- *               type: string   
- *       
+ *       requestBody:
+ *           required: true
+ *           content:
+ *                application/x-www-form-urlencoded:
+ *                     schema:
+ *                         $ref: '#components/schemas/Category'
+ *                application/json:
+ *                     schema:
+ *                         $ref: '#components/schemas/Category' 
  *       responses:
  *           201:
  *               description: Success
@@ -43,16 +58,21 @@ router.post("/add",categoryController.addCategory)
  *    put:
  *       tags : [Admin-Panel] 
  *       summary: edit or update category title with object id
- *       description: category ثیهفخق
+ *       description: UPDATE category
  *       parameters:
  *          -    name: id
  *               in: path
  *               required: true
  *               type: string 
- *          -    name: title
- *               in: formData
- *               required: true
- *               type: string   
+ *       requestBody:
+ *           required: true
+ *           content:
+ *                application/x-www-form-urlencoded:
+ *                     schema:
+ *                         $ref: '#components/schemas/Category'
+ *                application/json:
+ *                     schema:
+ *                         $ref: '#components/schemas/Category' 
  *       
  *       responses:
  *           200:
