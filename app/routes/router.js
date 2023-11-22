@@ -11,7 +11,7 @@ const { checkRole, verifyAccessToken } = require("../http/middlewares/verifyAcce
 })();
 const router = require("express").Router();
 router.use("/", HomeRoutes);
-router.use("/admin",verifyAccessToken,checkRole("admin"),AdminRoutes)
+router.use("/admin",verifyAccessToken,AdminRoutes)
 router.use("/login", UserAuth);
 router.use("/developer", DeveloperRoutes);
 module.exports = {
