@@ -100,7 +100,7 @@ router.post(
  *           -     in : path
  *                 name : id
  *                 type: string
- *                 require : true
+ *                 required : true
  *           -     in: header
  *                 name: access-token
  *                 type: string
@@ -123,7 +123,7 @@ router.get("/:id", AdminBlogController.getOneBlogById);
  *           -     in : path
  *                 name : id
  *                 type: string
- *                 require : true
+ *                 required : true
  *           -     in: header
  *                 name: access-token
  *                 type: string

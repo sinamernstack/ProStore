@@ -1,9 +1,11 @@
-const { ProductController } = require("../../http/controllers/admin/product.controller")
-const { stringToArray } = require("../../http/middlewares/stringToArray")
-const { uploadFile } = require("../../utils/multer")
+const productController = require("../../http/controllers/admin/product.controller");
+const {
+  ProductController,
+} = require("../../http/controllers/admin/product.controller");
+const { stringToArray } = require("../../http/middlewares/stringToArray");
+const { uploadFile } = require("../../utils/multer");
 
-
-const router = require("express").Router()
+const router = require("express").Router();
 /**
  * @swagger
  *  components:
@@ -26,24 +28,30 @@ const router = require("express").Router()
  *                      description: the short text of product
  *                   text:
  *                      type: string
- *                      description: the text of category
+ *                      description: the text of product
  *                   tags:
  *                      type: array
- *                      description: the tags of category
+ *                      description: the tags of product
  *                   category:
  *                      type: string
  *                      description: the category of product
  *                   count:
- *                      type: string
- *                      description: the image of category
+ *                      type: number
+ *                      description: the count of product
+ *                   price:
+ *                      type: number
+ *                      description: the price of product
  *                   discount:
- *                      type: string
- *                      description: the image of category
+ *                      type: number
+ *                      description: the discount of product
  *                   image:
- *                      type: file
- *                      description: the image of category
- * 
- * 
+ *                      type: array
+ *                      items: 
+ *                           type: string
+ *                           format: binary
+ *                      description: the image of product
+ *
+ *
  *
  */
 
@@ -54,7 +62,7 @@ const router = require("express").Router()
  *       tags : [Product(AdminPanel)]
  *       summary: create blog document
  *       consumes:
- *           -   multipart/form-data       
+ *           -   multipart/form-data
  *       requestBody:
  *           required: true
  *           content:
@@ -64,19 +72,58 @@ const router = require("express").Router()
  *
  *
  *       responses:
- *           201:
+ *           201: 
+ *               description: Success
+ *
+ *
+ */
+
+router.post(
+  "/add",
+  uploadFile.array("image",10),
+  stringToArray("tags"),
+ 
+  ProductController.addProduct
+);
+
+/**
+ * @swagger
+ *  /admin/product/list:
+ *    get:
+ *       tags : [Product(AdminPanel)]
+ *       summary: get All products
+ *
+ *       responses:
+ *           200:
+ *               description: Success
+ *
+ *
+ */
+router.get("/list",ProductController.getAllProducts)
+
+/**
+ * @swagger
+ *  /admin/product/list/{id}:
+ *    get:
+ *       tags : [Product(AdminPanel)]
+ *       summary: get products by id
+ *       parameters:
+ *           -     in : path
+ *                 name : id
+ *                 type: string
+ *                 required : true
+ *                 description: objectId of Product
+ *       responses:
+ *           200:
  *               description: Success
  *
  *
  */
 
 
-router.post("/add",uploadFile.single("image"),stringToArray("tags"),ProductController.addProduct)
+router.get("/list/:id",ProductController.getOneProduct)
 // router.patch()
 // router.delete()
-// router.get()
-// router.get()
-
-module.exports={
-    AdminAPiProductRouter : router
-}
+module.exports = {
+  AdminAPiProductRouter: router,
+};

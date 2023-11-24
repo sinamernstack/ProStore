@@ -4,6 +4,7 @@ const { UserModel } = require("../models/users");
 const { REFRESHTOKEN, ACCESS_TOKEN_SECRET_KEY } = require("./constans");
 const { redisClient } = require("./init_redis");
 const fs = require("fs");
+const path = require("path");
 
 function randomNumberGenerator() {
   return Math.floor(Math.random() * 90000 + 10000);
@@ -68,15 +69,19 @@ function verifyRefreshToken(token) {
 }
 
 function deleteFileInPublic(fileAddress) {
-  if(fileAddress){
-  const pathFile = path.join(
-    __dirname,
-    "..",
-    "..", 
-    "public",
-    fileAddress
-  );
-  if(fs.existsSync(pathFile)) fs.unlinkSync(pathFile);}
+  if (fileAddress) {
+    const pathFile = path.join(__dirname, "..", "..", "public", fileAddress);
+    if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile);
+  }
+}
+
+function listOFImageFromRequest(files, fileUploadPath) {
+  if (files?.length > 0) {
+    return ((files.map((file) =>
+      path.join(fileUploadPath, file.filename))).map(item => item.replace(/\\/g, "/")))
+  } else {
+    return [];
+  }
 }
 
 module.exports = {
@@ -84,5 +89,6 @@ module.exports = {
   SignAccessToken,
   SignRefreshToken,
   verifyRefreshToken,
-  deleteFileInPublic
+  deleteFileInPublic,
+  listOFImageFromRequest,
 };

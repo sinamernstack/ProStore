@@ -1,10 +1,9 @@
 const path = require("path");
-const { addCategorySchema } = require("../../validators/admin/category.schema");
 const Controller = require("../controller");
 const { BlogModel } = require("../../../models/blogs");
 const { deleteFileInPublic } = require("../../../utils/functions");
 const createError = require("http-errors");
-const { ObjectId } = require("mongodb");
+
 class BlogController extends Controller {
   async createBlog(req, res, next) {
     try {
@@ -30,6 +29,7 @@ class BlogController extends Controller {
         data: {
           statusCode: 201,
           message: "وبلاگ با موفقیت ایجاد شد",
+          blog
         },
       });
     } catch (error) {
