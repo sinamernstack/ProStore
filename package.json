@@ -33,5 +33,8 @@
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.0",
         "yup": "^1.2.0"
+    },
+    "devDependencies": {
+        "http-status-code": "^2.1.0"
     }
 }

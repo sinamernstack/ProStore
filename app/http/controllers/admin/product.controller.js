@@ -11,6 +11,8 @@ const Controller = require("../controller");
 const {
   ObjectIdValidator,
 } = require("../../validators/public/publicValidator");
+const createError = require("http-errors");
+const HttpStatus = require("http-status-code");
 
 class ProductController extends Controller {
   async addProduct(req, res, next) {
@@ -63,7 +65,19 @@ class ProductController extends Controller {
 
   async removeProduct(req, res, next) {
     try {
-      
+      const { id } = req.params;
+      const product = await this.findProduct(id);
+      const deletedProduct = await ProductModel.deleteOne({ _id: product._id });
+      if (!deletedProduct)
+        throw createError.InternalServerError("product not found");
+
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          message: "محصول با موفقیت پاک شد",
+          deletedProduct,
+        },
+      });
     } catch (error) {
       next(error);
     }
@@ -71,7 +85,18 @@ class ProductController extends Controller {
 
   async getAllProducts(req, res, next) {
     try {
-      const products = await ProductModel.find({});
+      const search = req?.query?.search || "";
+let products
+      if (search) {
+        products = await ProductModel.find({
+          $or: [
+            { title: { $regex: search, $options: "i" } },
+            { text: { $regex: search, $options: "i" } },
+          ],
+        });
+      }
+      else{ products = await ProductModel.find({});}
+
       return res.status(200).json({
         data: {
           statusCode: 200,
@@ -84,10 +109,10 @@ class ProductController extends Controller {
     }
   }
 
-async  getOneProduct(req, res, next) {
+  async getOneProduct(req, res, next) {
     try {
       const { id } = req.params;
-      const product =await this.findProduct(id);
+      const product = await this.findProduct(id);
       return res.status(200).json({
         data: {
           statusCode: 200,
@@ -107,7 +132,7 @@ async  getOneProduct(req, res, next) {
       if (!product) {
         throw createError.NotFound("محصول یافت نشد");
       }
-      return product
+      return product;
     } catch (error) {
       next(error);
     }

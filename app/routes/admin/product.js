@@ -46,7 +46,7 @@ const router = require("express").Router();
  *                      description: the discount of product
  *                   image:
  *                      type: array
- *                      items: 
+ *                      items:
  *                           type: string
  *                           format: binary
  *                      description: the image of product
@@ -72,7 +72,7 @@ const router = require("express").Router();
  *
  *
  *       responses:
- *           201: 
+ *           201:
  *               description: Success
  *
  *
@@ -80,9 +80,9 @@ const router = require("express").Router();
 
 router.post(
   "/add",
-  uploadFile.array("image",10),
+  uploadFile.array("image", 10),
   stringToArray("tags"),
- 
+
   ProductController.addProduct
 );
 
@@ -92,14 +92,18 @@ router.post(
  *    get:
  *       tags : [Product(AdminPanel)]
  *       summary: get All products
- *
+ *       parameters:
+ *            -   in: query
+ *                name: search
+ *                type: string
+ *                description: text for search in title , short_text of(product)
  *       responses:
  *           200:
  *               description: Success
  *
  *
  */
-router.get("/list",ProductController.getAllProducts)
+router.get("/list", ProductController.getAllProducts);
 
 /**
  * @swagger
@@ -120,10 +124,63 @@ router.get("/list",ProductController.getAllProducts)
  *
  */
 
+router.get("/list/:id", ProductController.getOneProduct);
 
-router.get("/list/:id",ProductController.getOneProduct)
-// router.patch()
-// router.delete()
+/**
+ * @swagger
+ *  /admin/product/remove/{id}:
+ *    delete:
+ *       tags : [Product(AdminPanel)]
+ *       summary: get products by id
+ *       parameters:
+ *           -     in : path
+ *                 name : id
+ *                 type: string
+ *                 required : true
+ *                 description: objectId of Product
+ *       responses:
+ *           200:
+ *               description: Success
+ *
+ *
+ */
+
+router.delete("/remove/:id", ProductController.removeProduct);
+
+/**
+ * @swagger
+ *  /admin/product/edit/{id}:
+ *    patch:
+ *       tags : [Product(AdminPanel)]
+ *       summary: edit product
+ *       parameters:
+ *           -     in : path
+ *                 name : id
+ *                 type: string
+ *                 required : true
+ *                 description: edit Product with id
+ *       requestBody:
+ *           required: true
+ *           content:
+ *                 multipart/form-data:
+ *                     schema:
+ *                         $ref: '#components/schemas/Product'
+ *
+ *
+ *       responses:
+ *           201:
+ *               description: Success
+ *
+ *
+ */
+
+router.patch(
+  "/edit/:id",
+  uploadFile.array("image", 10),
+  stringToArray("tags"),
+  ProductController.editProduct
+);
+
 module.exports = {
   AdminAPiProductRouter: router,
 };
